@@ -21,7 +21,7 @@
 		<div class="container">
 			<div class="row">
 				
-			<div class="p-2 bg-info-gradient text-white d-flex justify-content-between mb-2">
+			<div class="p-2 bg-success text-white d-flex justify-content-between mb-2">
 				<div class="ml-2 mt-2" id="message"></div>
 				<div class="mr-2"> <a href="{{route('show.cart')}}" class="btn btn-light mr-2 py-1">Show Cart</a> <i class="fas fa-cart-shopping"></i> Cart (<span id="total-item">{{Gloudemans\Shoppingcart\Facades\Cart::content()->count()}}</span>)</div>
 			</div>
