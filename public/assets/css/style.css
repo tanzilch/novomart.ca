@@ -1,0 +1,32 @@
+.cart-modal.come-from-modal.modal.show
+{
+	display: flex!important;
+	justify-content: end!important;
+}
+.cart-modal.come-from-modal.left .modal-dialog,
+.cart-modal.come-from-modal.right .modal-dialog {
+    margin: auto;
+    width: 400px;
+    height: 100%;
+}
+
+.cart-modal.come-from-modal.left .modal-content,
+.cart-modal.come-from-modal.right .modal-content {
+    height: 100%;
+    overflow-y: auto;
+    border-radius: 0px;
+}
+
+.cart-modal.come-from-modal.left .modal-body,
+.cart-modal.come-from-modal.right .modal-body {
+    padding: 15px 15px 80px;
+}
+.come-from-modal.right.fade .modal-dialog {
+    margin: 0;
+    right: 0;
+    transition: none;
+}
+
+.cart-modal.come-from-modal.right.fade.in .modal-dialog {
+    right: 0;
+}

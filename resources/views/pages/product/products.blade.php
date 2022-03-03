@@ -23,7 +23,7 @@
 				
 			<div class="p-2 bg-success text-white d-flex justify-content-between mb-2">
 				<div class="ml-2 mt-2" id="message"></div>
-				<div class="mr-2"> <a href="{{route('show.cart')}}" class="btn btn-light mr-2 py-1">Show Cart</a> <i class="fas fa-cart-shopping"></i> Cart (<span id="total-item">{{Gloudemans\Shoppingcart\Facades\Cart::content()->count()}}</span>)</div>
+				<div class="mr-2"> <a href="#" data-toggle="modal" data-target="#myModal1" class="btn btn-light mr-2 py-1">Show Cart</a> <i class="fas fa-cart-shopping"></i> Cart (<span id="total-item">{{Gloudemans\Shoppingcart\Facades\Cart::content()->count()}}</span>)</div>
 			</div>
 			</div>
 			<div class="row">
@@ -46,22 +46,24 @@
 								</tr>
 							</thead>
 							<tbody>
+								@foreach($products as $product)
+								@foreach($product->variants as $variant)
 								<tr>
 									<th scope="row" class="border-0">
 										<div class="p-2">
-											<img src="https://bootstrapious.com/i/snippets/sn-cart/product-1.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
+											<img src="{{$product->images[0]->src}}" alt="" width="70" class="img-fluid rounded shadow-sm">
 											<div class="ml-3 d-inline-block align-middle">
-												<h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">Timex Unisex Originals</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category: Watches</span>
+												<h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">{{$product->title}}</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category: {{$variant->title}}</span>
 											</div>
 										</div>
 									</th>
-									<td class="align-middle"><strong>$79.00</strong></td>
+									<td class="align-middle"><strong>{{$variant->price}}</strong></td>
 									<td class="align-middle">
-										<form action="{{route('add.to.cart')}}" method="post" class="d-flex">
+										<form action="" method="post" class="d-flex">
 											@csrf
 										<div class="w-50 mr-2">
-											<input type="hidden" id="productId-1" value="1">
-											<select class="form-control mb-1 quantity-selector" id="qnty-slct-1">
+											<input type="hidden" id="productId-{{$variant->id}}" value="{{$variant->id}}">
+											<select class="form-control mb-1 quantity-selector" id="qnty-slct-{{$variant->id}}">
 												<option>100</option>
 												<option>200</option>
 												<option>300</option>
@@ -74,85 +76,16 @@
 												<option>1000</option>
 												<option>Custom</option>
 											</select>
-											<input type="number" id="qnty-cstm-1" class="form-control custom-quantity" min="25">
+											<input type="number" id="qnty-cstm-{{$variant->id}}" class="form-control custom-quantity" min="25">
 										</div>
 										<div class="w-50 h-100 d-flex justify-content-center">
-											<button type="submit" data-select="qnty-slct-1" data-custome="qnty-cstm-1" data-product="productId-1" class="text-white btn btn-success submit-btn">Add to card <i class="fas fa-arrow-right"></i></button>
+											<button type="submit" data-name="{{$product->title.'---'.$variant->title}}" data-price="{{$variant->price}}" data-select="qnty-slct-{{$variant->id}}" data-custome="qnty-cstm-{{$variant->id}}" data-product="productId-{{$variant->id}}" class="text-white btn btn-success submit-btn">Add to card <i class="fas fa-arrow-right"></i></button>
 										</div>
 										</form>
 									</td>
 								</tr>
-								<tr>
-									<th scope="row">
-										<div class="p-2">
-											<img src="https://bootstrapious.com/i/snippets/sn-cart/product-2.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
-											<div class="ml-3 d-inline-block align-middle">
-												<h5 class="mb-0"><a href="#" class="text-dark d-inline-block">Lumix camera lense</a></h5><span class="text-muted font-weight-normal font-italic">Category: Electronics</span>
-											</div>
-										</div>
-									</th>
-									<td class="align-middle"><strong>$79.00</strong></td>
-									<td class="align-middle">
-										<form action="{{route('add.to.cart')}}" method="post" class="d-flex">
-											@csrf
-										<div class="w-50 mr-2">
-											<input type="hidden" id="productId-2" value="2">
-											<select class="form-control mb-1 quantity-selector" id="qnty-slct-2">
-												<option>100</option>
-												<option>200</option>
-												<option>300</option>
-												<option>400</option>
-												<option>500</option>
-												<option>600</option>
-												<option>700</option>
-												<option>800</option>
-												<option>900</option>
-												<option>1000</option>
-												<option>Custom</option>
-											</select>
-											<input type="number" id="qnty-cstm-2" class="form-control custom-quantity" min="25">
-										</div>
-										<div class="w-50 h-100 d-flex justify-content-center">
-											<button type="submit" data-select="qnty-slct-2" data-custome="qnty-cstm-2" data-product="productId-2" class="text-white btn btn-success submit-btn">Add to card <i class="fas fa-arrow-right"></i></button>
-										</div>
-										</form>
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">
-										<div class="p-2">
-											<img src="https://bootstrapious.com/i/snippets/sn-cart/product-3.jpg" alt="" width="70" class="img-fluid rounded shadow-sm">
-											<div class="ml-3 d-inline-block align-middle">
-												<h5 class="mb-0"> <a href="#" class="text-dark d-inline-block">Gray Nike running shoe</a></h5><span class="text-muted font-weight-normal font-italic">Category: Fashion</span>
-											</div>
-										</div>
-									<td class="align-middle"><strong>$79.00</strong></td>
-									<td class="align-middle">
-										<form action="{{route('add.to.cart')}}" method="post" class="d-flex">
-											@csrf
-										<div class="w-50 mr-2">
-											<input type="hidden" id="productId-3" value="3">
-											<select class="form-control mb-1 quantity-selector" id="qnty-slct-3">
-												<option>100</option>
-												<option>200</option>
-												<option>300</option>
-												<option>400</option>
-												<option>500</option>
-												<option>600</option>
-												<option>700</option>
-												<option>800</option>
-												<option>900</option>
-												<option>1000</option>
-												<option>Custom</option>
-											</select>
-											<input type="number" id="qnty-cstm-3" class="form-control custom-quantity" min="25">
-										</div>
-										<div class="w-50 h-100 d-flex justify-content-center">
-											<button type="submit" data-select="qnty-slct-3" data-custome="qnty-cstm-3" data-product="productId-3" class="text-white btn btn-success submit-btn">Add to card <i class="fas fa-arrow-right"></i></button>
-										</div>
-										</form>
-									</td>
-								</tr>
+								@endforeach
+								@endforeach
 							</tbody>
 						</table>
 					</div>
@@ -192,9 +125,53 @@
 					</div>
 				</div>
 			</div> -->
-
 		</div>
 	</div>
+</div>
+<!-- ----------popup------------ -->
+<div class="modal fade  come-from-modal right cart-modal" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-teal-lightest">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Carts</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body pt-0">
+               @php
+               		$cartProduct = Gloudemans\Shoppingcart\Facades\Cart::content();
+               @endphp
+               @foreach($cartProduct as $product)
+               <div class="align-items-center p-2 bg-white mt-4 px-3 ">
+	               	<div class="d-flex flex-row justify-content-between">
+			            <div class="mr-2"><img class="rounded" src="https://i.imgur.com/XiFJkhI.jpg" width="50"></div>
+			            @php
+			            	$name = explode("---", $product->name);
+			            @endphp
+			            <div class="d-flex flex-column align-items-start product-details"><span class="font-weight-bold pr-3">{{$name[0]}}</span>
+			                <div class="d-flex flex-row product-desc">
+			                    <div class="size mr-1"><span class="text-black-50 font-weight-bold">Size:</span></div>
+			                    <div class="color"><span class="text-black-50">{{$name[1]}}</span></div>
+			                </div>
+			            </div>
+			            <!-- <div class="d-flex flex-row align-items-center qty"><i class="fa fa-minus text-danger"></i>
+			                <h5 class="text-grey mt-1 mr-1 ml-1">2</h5><i class="fa fa-plus text-success"></i>
+			            </div> -->
+			        </div>
+			        <div class="mt-2 d-flex justify-content-between">
+			        	<div class="w-25"></div>
+			            <h5 class="text-grey">${{$product->price}}</h5>
+			            <div class="d-flex align-items-center"><i class="fa fa-trash mb-1 text-danger"></i></div>
+			        </div>
+		        </div>
+		        @endforeach
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
@@ -224,7 +201,10 @@
 			var productId = $("#"+dataProduct).val();
 			var selectVal = $("#"+dataSelect).val();
 			var customeVal = $("#"+dataCustome).val();
-			
+
+			var productName = $(this).data("name");
+			var productPrice = $(this).data("price");
+
 			if(selectVal!="Custom" || customeVal >= 25)
 			{
 				if(customeVal >= 25)
@@ -239,7 +219,7 @@
 				$.ajax({
 					type: 'POST',
 					url: "{{ route('add.to.cart') }}",
-					data: {product_id:productId, original_quantity:originalQuanity, "_token": "{{ csrf_token() }}" },
+					data: {product_id:productId, original_quantity:originalQuanity, product_name:productName, product_price:productPrice, "_token": "{{ csrf_token() }}" },
 					success:function(response){
 						$("#message").html(response.msg);
 						$("#total-item").html(response.total_items);

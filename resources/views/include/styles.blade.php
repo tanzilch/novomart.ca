@@ -17,6 +17,7 @@
 
 <!-- COLOR SKIN CSS -->
 <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{asset('public/assets/site_asset/colors/color1.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{asset('public/assets/css/style.css')}}" />
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
