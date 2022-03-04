@@ -11,8 +11,10 @@
 	 <!-- PAGE-HEADER -->
     <div class="col-md-12 page-header">
         <h1 class="page-title">Fill Out the Form</h1>
-      
+		<h1 class="page-title text-left">Total Price in Cart = $ 1234</h1>
+			
     </div>
+	
     <!-- PAGE-HEADER END -->
 	<!-- End -->
 	<div class="pb-5">
@@ -30,23 +32,38 @@
 					<!-- Shopping cart table -->
 					<div class="table-responsive">
 						<table class="table">
-							<thead>
+							<thead class="text-center">
 								<tr>
+									<th scope="col" class="border-0 bg-light">
+										<div class="p-2 px-3 text-uppercase">Sr. #</div>
+									</th>
 									<th scope="col" class="border-0 bg-light">
 										<div class="p-2 px-3 text-uppercase">Product</div>
 									</th>
 									<th scope="col" class="border-0 bg-light">
 										<div class="py-2 text-uppercase">Price</div>
 									</th>
-									<th scope="col" class="border-0 bg-light text-center" style="width: 30%;">
+									<th scope="col" class="border-0 bg-light" style="width: 30%;">
 										<div class="py-2 text-uppercase">Quantity</div>
 									</th>
+									<th scope="col" class="border-0 bg-light">
+										<div class="py-2 text-uppercase">Total</div>
+									</th>
+									<th scope="col" class="border-0 bg-light">
+										<div class="py-2 text-uppercase">Action</div>
+									</th>
+									
 								</tr>
 							</thead>
 							<tbody>
+								@php
+									$x=1;
+								@endphp
 								@foreach($products as $product)
 								@foreach($product->variants as $variant)
+								
 								<tr>
+									<td class="text-center align-middle">{{$x++;}}</td>
 									<th scope="row" class="border-0">
 										<div class="p-2">
 											<img src="{{$product->images[0]->src}}" alt="" width="70" class="img-fluid rounded shadow-sm">
@@ -55,15 +72,16 @@
 											</div>
 										</div>
 									</th>
-									<td class="align-middle"><strong>{{$variant->price}}</strong></td>
-									<td class="align-middle">
+									<td class="align-middle"><strong>$ {{$variant->price}}</strong></td>
+									<td class="align-middle text-center">
 										<form action="" method="post" class="d-flex">
 											@csrf
 											<div>
 											</div>
-										<div class="w-50 mr-2">	
+										<div class="w-100 mr-2">	
 											<input type="hidden" id="productId-{{$variant->id}}" value="{{$variant->id}}">
-											<select class="form-control mb-1 quantity-selector" id="qnty-slct-{{$variant->id}}">
+											<select class="form-control  mb-1 quantity-selector dropdown-arrow" id="qnty-slct-{{$variant->id}}">
+												<option>Select Quantity</option>
 												<option>100</option>
 												<option>200</option>
 												<option>300</option>
@@ -76,16 +94,22 @@
 												<option>1000</option>
 												<option>Custom</option>
 											</select>
-											<div class="custom-value">
+											<div class="custom-value" style="display:none">
 												<input type="number" id="qnty-cstm-{{$variant->id}}" class="form-control custom-quantity" min="25">
-												<p class="text-nowrap mini-value" type="hidden">Minimum Value is 25</p>
+												<p class="text-nowrap mini-value text-danger text-left" >Minimum value is 25</p>
 											</div>
 										</div>
-										<div class="w-50 h-100 d-flex justify-content-center">
+										
+									</td>
+									<td></td>
+									<td>
+										<div class="h-100 mt-4 d-flex justify-content-center">
 											<button type="submit" data-name="{{$product->title.'---'.$variant->title}}" data-price="{{$variant->price}}" data-select="qnty-slct-{{$variant->id}}" data-custome="qnty-cstm-{{$variant->id}}" data-product="productId-{{$variant->id}}" class="text-white btn btn-success submit-btn">Add to Cart <i class="fas fa-arrow-right"></i></button>
 										</div>
-										</form>
+										
 									</td>
+									
+								</form>
 								</tr>
 								@endforeach
 								@endforeach
@@ -180,8 +204,7 @@
 
 @section('customJs')
 <script type="text/javascript">
-	$(".custom-value").hide();
-	$(".mini-value").hide();
+	// $(".custom-value").hide();
 	$(document).ready(function(){
 		/*for custom select*/
 		$(".quantity-selector").change(function(){

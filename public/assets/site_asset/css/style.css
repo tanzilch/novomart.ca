@@ -510,6 +510,10 @@ pre code {
     padding-right: 0.75rem;
     padding-left: 0.75rem;
 }
+.dropdown-arrow{
+    
+    -webkit-appearance: auto;
+}
 
 @media (max-width: 576px) {
     .container {
