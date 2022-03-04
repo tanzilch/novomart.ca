@@ -4,21 +4,19 @@
 
 @section('content')
 <div class="px-4 px-lg-0">
+	<div class="text-center mt-2 d-lg-block">
+		<p class="h1 mb-0 cstm-fontSize" style="font-size: 80px">Place Your Order</p>
+	</div>
 	<!-- For demo purpose -->
 	 <!-- PAGE-HEADER -->
-    <div class="page-header">
-        <h1 class="page-title">Dashboard 01</h1>
-        <div>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Dashboard 01</li>
-            </ol>
-        </div>
+    <div class="col-md-12 page-header">
+        <h1 class="page-title">Fill Out the Form</h1>
+      
     </div>
     <!-- PAGE-HEADER END -->
 	<!-- End -->
 	<div class="pb-5">
-		<div class="container">
+		<div class="">
 			<div class="row">
 				
 			<div class="p-2 bg-success text-white d-flex justify-content-between mb-2">
@@ -61,7 +59,9 @@
 									<td class="align-middle">
 										<form action="" method="post" class="d-flex">
 											@csrf
-										<div class="w-50 mr-2">
+											<div>
+											</div>
+										<div class="w-50 mr-2">	
 											<input type="hidden" id="productId-{{$variant->id}}" value="{{$variant->id}}">
 											<select class="form-control mb-1 quantity-selector" id="qnty-slct-{{$variant->id}}">
 												<option>100</option>
@@ -76,10 +76,13 @@
 												<option>1000</option>
 												<option>Custom</option>
 											</select>
-											<input type="number" id="qnty-cstm-{{$variant->id}}" class="form-control custom-quantity" min="25">
+											<div class="custom-value">
+												<input type="number" id="qnty-cstm-{{$variant->id}}" class="form-control custom-quantity" min="25">
+												<p class="text-nowrap mini-value" type="hidden">Minimum Value is 25</p>
+											</div>
 										</div>
 										<div class="w-50 h-100 d-flex justify-content-center">
-											<button type="submit" data-name="{{$product->title.'---'.$variant->title}}" data-price="{{$variant->price}}" data-select="qnty-slct-{{$variant->id}}" data-custome="qnty-cstm-{{$variant->id}}" data-product="productId-{{$variant->id}}" class="text-white btn btn-success submit-btn">Add to card <i class="fas fa-arrow-right"></i></button>
+											<button type="submit" data-name="{{$product->title.'---'.$variant->title}}" data-price="{{$variant->price}}" data-select="qnty-slct-{{$variant->id}}" data-custome="qnty-cstm-{{$variant->id}}" data-product="productId-{{$variant->id}}" class="text-white btn btn-success submit-btn">Add to Cart <i class="fas fa-arrow-right"></i></button>
 										</div>
 										</form>
 									</td>
@@ -177,7 +180,8 @@
 
 @section('customJs')
 <script type="text/javascript">
-	$(".custom-quantity").hide();
+	$(".custom-value").hide();
+	$(".mini-value").hide();
 	$(document).ready(function(){
 		/*for custom select*/
 		$(".quantity-selector").change(function(){
@@ -185,11 +189,15 @@
 			if(value=="Custom")
 			{
 				$(this).next().show();
+				$(".mini-value").show();
 			}
 			else
 			{
 				$(this).next().hide();
+				$(".mini-value").hide();
+
 			}
+			
 		});
 		/*Ajax base add to cart*/
 		$(".submit-btn").click(function(e){

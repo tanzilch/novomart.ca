@@ -1,20 +1,21 @@
 <!-- app-Header -->
-<div class="app-header header sticky">
+<div class="app-header header sticky p-1">
     <div class="container-fluid main-container">
-        <div class="d-flex">
-            <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar" href="javascript:void(0)"></a>
+        <div>
+            {{-- <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar" href="javascript:void(0)"></a> --}}
             <!-- sidebar-toggle-->
-            <a class="logo-horizontal " href="index.html">
-                <img src="{{asset('public/assets/site_asset/images/brand/logo.png')}}" class="header-brand-img desktop-logo" alt="logo">
-                <img src="{{asset('public/assets/site_asset/images/brand/logo-3.png')}}" class="header-brand-img light-logo1"
-                    alt="logo">
-            </a>
+            <a href="#" class="d-lg-block text-center">
+    
+                    <img src="{{asset('assets/site_asset/images/brand/CA-logo-brb.png')}}" width="90" height="90" class="header-brand-img desktop-logo " alt="logo">                  
+                </a>
+            
             <!-- LOGO -->
-            <div class="main-header-center ms-3 d-none d-lg-block">
-                <input class="form-control" placeholder="Search for results..." type="search">
-                <button class="btn px-0 pt-2"><i class="fe fe-search" aria-hidden="true"></i></button>
+            {{--  <div class="main-header-center ms-3 d-none d-lg-block text-center">
+               <input class="form-control" placeholder="Search for results..." type="search">
+                <button class="btn px-0 pt-2"><i class="fe fe-search" aria-hidden="true"></i></button> 
             </div>
-            <div class="d-flex order-lg-2 ms-auto header-right-icons">
+
+            {{-- <div class="d-flex order-lg-2 ms-auto header-right-icons">
                 <div class="dropdown d-none">
                     <a href="javascript:void(0)" class="nav-link icon" data-bs-toggle="dropdown">
                         <i class="fe fe-search"></i>
@@ -252,8 +253,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
+        
     </div>
+        
 </div>
 <!-- /app-Header -->

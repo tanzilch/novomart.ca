@@ -9,9 +9,9 @@
 		<div class="page-main">
 		@include('include.header')
 
-		@include('include.sidebar')
+		{{-- @include('include.sidebar') --}}
 
-		<div class="main-content app-content mt-0">
+		<div class="main-content app-content m-0 mt-0">
                 <div class="side-app">
 				@yield('content')
 			</div>
