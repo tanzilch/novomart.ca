@@ -5,7 +5,7 @@
 @section('content')
 <div class="px-4 px-lg-0">
 	<div class="text-center mt-2 d-lg-block">
-		<p class="h1 mb-0 cstm-fontSize" style="font-size: 80px">Place Your Order</p>
+		{{-- <p class="h1 mb-0 cstm-fontSize" style="font-size: 80px">Place Your Order</p> --}}
 	</div>
 	<!-- For demo purpose -->
 	 <!-- PAGE-HEADER -->
@@ -50,7 +50,7 @@
 										<div class="py-2 text-uppercase">Total</div>
 									</th>
 									<th scope="col" class="border-0 bg-light">
-										<div class="py-2 text-uppercase">Action</div>
+										<div class="py-2 text-uppercase text-center">Action</div>
 									</th>
 									
 								</tr>
@@ -96,7 +96,7 @@
 											</select>
 											<div class="custom-value" style="display:none">
 												<input type="number" id="qnty-cstm-{{$variant->id}}" class="form-control custom-quantity" min="25">
-												<p class="text-nowrap mini-value text-danger text-left mb-sm-n1" >Minimum value is 25</p>
+												<p class="text-nowrap mini-value text-danger text-left mb-sm-n1" >Minimum Order Quantity is 25</p>
 											</div>
 										</div>
 										
@@ -206,7 +206,6 @@
 
 @section('customJs')
 <script type="text/javascript">
-	// $(".custom-value").hide();
 	$(document).ready(function(){
 		/*for custom select*/
 		$(".quantity-selector").change(function(){
