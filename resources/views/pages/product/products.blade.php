@@ -32,7 +32,7 @@
 					<!-- Shopping cart table -->
 					<div class="table-responsive">
 						<table class="table">
-							<thead class="text-center">
+							<thead class="text-left">
 								<tr>
 									<th scope="col" class="border-0 bg-light">
 										<div class="p-2 px-3 text-uppercase">Sr. #</div>
@@ -43,7 +43,7 @@
 									<th scope="col" class="border-0 bg-light">
 										<div class="py-2 text-uppercase">Price</div>
 									</th>
-									<th scope="col" class="border-0 bg-light" style="width: 30%;">
+									<th scope="col" class="border-0 bg-light">
 										<div class="py-2 text-uppercase">Quantity</div>
 									</th>
 									<th scope="col" class="border-0 bg-light">
@@ -68,17 +68,17 @@
 										<div class="p-2">
 											<img src="{{$product->images[0]->src}}" alt="" width="70" class="img-fluid rounded shadow-sm">
 											<div class="ml-3 d-inline-block align-middle">
-												<h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle">{{$product->title}}</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category: {{$variant->title}}</span>
+												<h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle ">{{$product->title}}</a></h5><span class="text-muted font-weight-normal font-italic d-block">Category: {{$variant->title}}</span>
 											</div>
 										</div>
 									</th>
 									<td class="align-middle"><strong>$ {{$variant->price}}</strong></td>
 									<td class="align-middle text-center">
-										<form action="" method="post" class="d-flex">
+										<form action="" method="post">
 											@csrf
 											<div>
 											</div>
-										<div class="w-100 mr-2">	
+										<div class="mr-2">	
 											<input type="hidden" id="productId-{{$variant->id}}" value="{{$variant->id}}">
 											<select class="form-control  mb-1 quantity-selector dropdown-arrow" id="qnty-slct-{{$variant->id}}">
 												<option>Select Quantity</option>
@@ -96,14 +96,16 @@
 											</select>
 											<div class="custom-value" style="display:none">
 												<input type="number" id="qnty-cstm-{{$variant->id}}" class="form-control custom-quantity" min="25">
-												<p class="text-nowrap mini-value text-danger text-left" >Minimum value is 25</p>
+												<p class="text-nowrap mini-value text-danger text-left mb-sm-n1" >Minimum value is 25</p>
 											</div>
 										</div>
 										
 									</td>
-									<td></td>
-									<td>
-										<div class="h-100 mt-4 d-flex justify-content-center">
+									<td class="align-middle text-center w-15">
+										<input type="text" readonly id="" class="form-control">
+									</td>
+									<td class="align-middle text-center">
+										<div class="h-100 d-flex justify-content-center align-middle">
 											<button type="submit" data-name="{{$product->title.'---'.$variant->title}}" data-price="{{$variant->price}}" data-select="qnty-slct-{{$variant->id}}" data-custome="qnty-cstm-{{$variant->id}}" data-product="productId-{{$variant->id}}" class="text-white btn btn-success submit-btn">Add to Cart <i class="fas fa-arrow-right"></i></button>
 										</div>
 										
