@@ -11,7 +11,7 @@
 	 <!-- PAGE-HEADER -->
     <div class="col-md-12 page-header">
         <h1 class="page-title">Fill Out the Form</h1>
-		<h1 class="page-title text-left">Total Price in Cart = $ 1234</h1>
+		<h1 class="page-title text-left">Total Price in Cart = <span id="total-price">{{$totalPrice}}</span></h1>
 			
     </div>
 	
@@ -72,7 +72,7 @@
 											</div>
 										</div>
 									</th>
-									<td class="align-middle"><strong>$ {{$variant->price}}</strong></td>
+									<td class="align-middle"><strong>${{$variant->price}}</strong></td>
 									<td class="align-middle text-center">
 										<form action="" method="post">
 											@csrf
@@ -81,7 +81,7 @@
 										<div class="mr-2">	
 											<input type="hidden" id="productId-{{$variant->id}}" value="{{$variant->id}}">
 											<select class="form-control  mb-1 quantity-selector dropdown-arrow" id="qnty-slct-{{$variant->id}}">
-												<option>Select Quantity</option>
+												<option>Select quantity</option>
 												<option>100</option>
 												<option>200</option>
 												<option>300</option>
@@ -106,7 +106,14 @@
 									</td>
 									<td class="align-middle text-center">
 										<div class="h-100 d-flex justify-content-center align-middle">
-											<button type="submit" data-name="{{$product->title.'---'.$variant->title}}" data-price="{{$variant->price}}" data-select="qnty-slct-{{$variant->id}}" data-custome="qnty-cstm-{{$variant->id}}" data-product="productId-{{$variant->id}}" class="text-white btn btn-success submit-btn">Add to Cart <i class="fas fa-arrow-right"></i></button>
+											<button type="submit" 
+											data-name="{{$product->title.'---'.$variant->title}}" 
+											data-price="{{$variant->price}}" 
+											data-select="qnty-slct-{{$variant->id}}" 
+											data-custome="qnty-cstm-{{$variant->id}}" 
+											data-product="productId-{{$variant->id}}"
+											data-image="{{$product->images[0]->src}}" 
+											class="text-white btn btn-success submit-btn">Add to Cart <i class="fas fa-arrow-right"></i></button>
 										</div>
 										
 									</td>
@@ -166,47 +173,62 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body pt-0">
-               @php
-               		$cartProduct = Gloudemans\Shoppingcart\Facades\Cart::content();
-               @endphp
-               @foreach($cartProduct as $product)
-               <div class="align-items-center p-2 bg-white mt-4 px-3 ">
-	               	<div class="d-flex flex-row justify-content-between">
-			            <div class="mr-2"><img class="rounded" src="https://i.imgur.com/XiFJkhI.jpg" width="50"></div>
-			            @php
-			            	$name = explode("---", $product->name);
-			            @endphp
-			            <div class="d-flex flex-column align-items-start product-details"><span class="font-weight-bold pr-3">{{$name[0]}}</span>
-			                <div class="d-flex flex-row product-desc">
-			                    <div class="size mr-1"><span class="text-black-50 font-weight-bold">Size:</span></div>
-			                    <div class="color"><span class="text-black-50">{{$name[1]}}</span></div>
-			                </div>
-			            </div>
+            	<div id="cart-data">
+               
 			            <!-- <div class="d-flex flex-row align-items-center qty"><i class="fa fa-minus text-danger"></i>
 			                <h5 class="text-grey mt-1 mr-1 ml-1">2</h5><i class="fa fa-plus text-success"></i>
 			            </div> -->
-			        </div>
-			        <div class="mt-2 d-flex justify-content-between">
-			        	<div class="w-25"></div>
-			            <h5 class="text-grey">${{$product->price}}</h5>
-			            <div class="d-flex align-items-center"><i class="fa fa-trash mb-1 text-danger"></i></div>
-			        </div>
-		        </div>
-		        @endforeach
-
+			  	</div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#checkoutModal">Checkout</button>
             </div>
+       
         </div>
     </div>
 </div>
+<!-- checkout modal -->
+<div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Checkout Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{route('product.mail')}}" method="post">
+        @csrf
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">First Name</label>
+            <input type="text" class="form-control" required name="first_name">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Last Name</label>
+            <input text class="form-control" required name="last_name">
+          </div>
+          <div class="form-group mb-7">
+            <label for="message-text" class="col-form-label">Email</label>
+            <input type="email" class="form-control" required name="email">
+          </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="submit" class="btn btn-success">Order</button>
+	      </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('customJs')
 <script type="text/javascript">
 	$(document).ready(function(){
+		ShowToCart();
 		/*for custom select*/
 		$(".quantity-selector").change(function(){
 			var value = $(this).val();
@@ -219,7 +241,6 @@
 			{
 				$(this).next().hide();
 				$(".mini-value").hide();
-
 			}
 			
 		});
@@ -253,8 +274,10 @@
 					url: "{{ route('add.to.cart') }}",
 					data: {product_id:productId, original_quantity:originalQuanity, product_name:productName, product_price:productPrice, "_token": "{{ csrf_token() }}" },
 					success:function(response){
+						ShowToCart();
 						$("#message").html(response.msg);
 						$("#total-item").html(response.total_items);
+						$("#total-price").html(response.total_price);
 						setTimeout(function(){
 							$("#message").html("");
 					}, 5000);
@@ -269,6 +292,20 @@
 						);
 			}
 		});
+		/*Ajax base show to cart*/
+		function ShowToCart()
+		{
+			$.ajax({
+					type: 'GET',
+					url: "{{ route('show.to.cart') }}",
+					data: {},
+					success:function(data,response){
+						$("#cart-data").html(data);
+						$("#message").html(response.msg);
+					}
+				});
+		}
+
 	});
 </script>
 @endsection

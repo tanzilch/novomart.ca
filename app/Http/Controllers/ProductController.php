@@ -8,34 +8,71 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Mail;
 
 class ProductController extends BaseController
 {
     public function showProducts()
     {
+        // dd(Cart::content());die;
         $products = $this->apidata();
     	return view('pages/product/products',[
-            "products" => $products
+            "products" => $products,
+            "totalPrice" => $this->priceInCart(),
         ]);
-    }   
-    public function showCart()
-    {
-        dd(Cart::content());
     }
+    /*=======ajax base add to cart============*/
     public function addToCart(Request $request)
     {
         extract($_POST);
 
     	$vrfy = Cart::add($product_id, $product_name, $original_quantity, $product_price);
-
+        $totalPrice = $this->priceInCart();
         if($vrfy)
         {
-            return response()->json(['msg'=>'Added successfully','total_items'=>Cart::content()->count()]);
+            return response()->json(['msg'=>'Added successfully','total_items'=>Cart::content()->count(),'total_price'=>$totalPrice]);
         }
         else
         {
-            return response()->json(['msg'=>'Some error','total_items'=>Cart::content()->count()]);
+            return response()->json(['msg'=>'Some error','total_items'=>Cart::content()->count(),'total_price'=>$totalPrice]);
         }
+    }
+    /*===========ajax base show to cart======*/
+    public function showToCart()
+    {
+        $cartProducts = Cart::content();
+        $data = "";
+        foreach($cartProducts as $product)
+        {
+            $name = explode("---", $product->name);
+            $priceValue = explode("$", $product->price);
+            $data .= '
+                    <div class="align-items-center p-2 bg-white mt-4 px-3 ">
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="mr-2">
+                                <img class="rounded" src="https://i.imgur.com/XiFJkhI.jpg" width="50">
+                            </div>
+                            <div class="d-flex flex-column align-items-start product-details">
+                                <span class="font-weight-bold pr-3">'.$name[0].'</span>
+                                <div class="d-flex flex-row product-desc">
+                                    <div class="size mr-1">
+                                        <span class="text-black-50 font-weight-bold">Category:</span>
+                                    </div>
+                                    <div class="color">
+                                        <span class="text-black-50">'.$name[1].'</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-2 d-flex justify-content-between">
+                            <div class="w-25">Qty: <span class="text-black-50">'. $product->qty .'</span></div>
+                            <h5 class="text-grey">$'. $product->qty*$priceValue[0] .'</h5>
+                            <div class="d-flex align-items-center"><i class="fa fa-trash mb-1 text-success"></i>
+                            </div>
+                        </div>
+                    </div>';
+        }
+        echo $data;
     }
     public function delFromCart(Request $request)
     {
@@ -44,8 +81,28 @@ class ProductController extends BaseController
 
     	return redirect()->route('add.to.cart');die;
     }
+    public function priceInCart()
+    {
+        $items = Cart::content();
+        $totalPrice = 0;
+        foreach ($items as $item)
+        {
+            $totalPrice = $totalPrice+($item->qty * (explode("$", $item->price)[0]));
+        }
+        return $totalPrice;
+    }
+    public function productMail(Request $request)
+    {
+        $data = ['products'=>Cart::content(),'fname'=>$request->first_name,'lname'=>$request->last_name,'email'=>$request->email];
+        $user = array();
+        $vrfy = Mail::send('mail',$data,function($messages) use ($user){
+            $messages->to("websterzonedev3@gmail.com");
+            $messages->subject('Products');
+        });
+        Cart::destroy();
 
-
+        return back();
+    }
 
     public function apidata()
     {
