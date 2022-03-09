@@ -2,13 +2,37 @@
 <div class="app-header header sticky p-1">
     <div class="container-fluid main-container">
         <div class="container p-0">
-                <div class="float-left d-flex">
+                <div class="float-left d-flex w-100 justify-content-between">
                         {{-- <a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-bs-toggle="sidebar" href="javascript:void(0)"></a> --}}
                         <!-- sidebar-toggle-->
                         <a href="#" class="text-center">
-                
-                                <img src="{{asset('assets/site_asset/images/brand/CA-logo-brb.png')}}" width="90" height="90" class="header-brand-img desktop-logo " alt="logo">                  
-                            </a>
+                            <img src="{{asset('assets/site_asset/images/brand/CA-logo-brb.png')}}" width="90" height="90" class="header-brand-img desktop-logo " alt="logo">                  
+                        </a>
+                        <div>
+                @if(!(Auth::user()))
+                <div>
+                    <p class="h1 mb-2 cstm-fontSize text-center" style="font-size: 80px">Place Your Order</p>
+                </div>
+                @endif
+                </div>
+                @if(Auth::user())
+                <div>
+                    <a class="dropdown-item font-weight-bold" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </div>
+                @else
+                <div>
+                    <a href="{{route('login')}}" class="dropdown-item font-weight-bold" href="{{ route('logout') }}">
+                        Login
+                    </a>
+                </div>
+                @endif
                         
                         <!-- LOGO -->
                         {{--  <div class="main-header-center ms-3 d-none d-lg-block text-center">
@@ -256,10 +280,6 @@
                             </div>
                         </div> --}}
                 </div>
-                        <div>
-                            <p class="h1 mb-2 cstm-fontSize text-center" style="font-size: 80px">Place Your Order</p>
-
-                        </div>
         </div>
     </div>      
 </div>

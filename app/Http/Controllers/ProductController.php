@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\Product;
 use Mail;
 
 class ProductController extends BaseController
@@ -52,7 +53,7 @@ class ProductController extends BaseController
                             <div class="mr-2">
                                 <img class="rounded" src="https://i.imgur.com/XiFJkhI.jpg" width="50">
                             </div>
-                            <div class="d-flex flex-column align-items-start product-details">
+                            <div class="d-flex flex-column align-items-start product-details w-75">
                                 <span class="font-weight-bold pr-3">'.$name[0].'</span>
                                 <div class="d-flex flex-row product-desc">
                                     <div class="size mr-1">
@@ -95,13 +96,18 @@ class ProductController extends BaseController
     {
         $data = ['products'=>Cart::content(),'fname'=>$request->first_name,'lname'=>$request->last_name,'email'=>$request->email];
         $user = array();
-        $vrfy = Mail::send('mail',$data,function($messages) use ($user){
+        Mail::send('mail',$data,function($messages) use ($user){
             $messages->to("websterzonedev3@gmail.com");
             $messages->subject('Products');
         });
         Cart::destroy();
-
-        return back();
+        Product::create([
+            "first_name" => $request->first_name,
+            "last_name" => $request->last_name,
+            "email" => $request->email,
+            "products" => json_encode(Cart::content()),
+        ]);
+        return redirect(route('products'));
     }
 
     public function apidata()
