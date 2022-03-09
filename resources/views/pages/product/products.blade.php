@@ -62,7 +62,7 @@
 								@foreach($products as $product)
 								@foreach($product->variants as $variant)
 								
-								<tr>
+								<tr class="product-row">
 									<td class="text-center align-middle">{{$x++;}}</td>
 									<th scope="row" class="border-0">
 										<div class="p-2">
@@ -102,7 +102,7 @@
 										
 									</td>
 									<td class="align-middle text-center w-15">
-										<input type="text" readonly id="" class="form-control">
+										<input type="number" readonly id="" value="" class="form-control product-price">
 									</td>
 									<td class="align-middle text-center">
 										<div class="h-100 d-flex justify-content-center align-middle">
@@ -242,6 +242,29 @@
 				$(this).next().hide();
 				$(".mini-value").hide();
 			}
+			
+		});
+		/*Show total price of every product*/
+		$(".quantity-selector").change(function(){
+			var slctVal = $(this).val();
+			var price = $(this).closest(".product-row").find(".submit-btn").data("price");
+			var totalPrice = 0;
+			if(slctVal == "Custom")
+			{
+				$(this).closest(".product-row").find(".custom-quantity").on('keyup', function(){
+					totalPrice= $(this).val()*price;
+					$(this).closest(".product-row").find(".product-price").val(totalPrice);
+				});
+			}
+			else if(slctVal == "Select quantity")
+			{
+				totalPrice = 0;
+			}
+			else
+			{
+				totalPrice = slctVal*price;
+			}
+			$(this).closest(".product-row").find(".product-price").val(totalPrice);
 			
 		});
 		/*Ajax base add to cart*/
