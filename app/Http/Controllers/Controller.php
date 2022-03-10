@@ -14,10 +14,26 @@ class Controller extends BaseController
 {
     public function dashboard()
     {
+        if(isset($_POST['filter_btn']))
+        {
+            print_r($request->input());die;
+        }
     	$products = Product::where("is_del",0)->get();
     	return view('pages/orders',[
     		"products" => $products
     	]);
+    }
+    public function filterOrder(Request $request)
+    {
+        $request->validate([
+            "start_date" => 'required',
+            "end_date" => 'required',
+        ]);
+
+        $products = Product::whereBetween("created_at",[$request->start_date." 00:00:00", $request->end_date." 23:59:59"])->get();
+        return view('pages/orders',[
+            "products" => $products
+        ]);
     }
     public function productStatus($id)
     {

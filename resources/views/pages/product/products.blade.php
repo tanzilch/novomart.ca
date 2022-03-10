@@ -22,7 +22,11 @@
 			<div class="row">
 				
 			<div class="p-2 bg-success text-white d-flex justify-content-between mb-2">
-				<div class="ml-2 mt-2" id="message"></div>
+				<div class="ml-2 mt-2" id="message">
+					@if(session('msg'))
+						{{session('msg')}}
+					@endif
+				</div>
 				<div class="mr-2"> <a href="#" data-toggle="modal" data-target="#myModal1" class="btn btn-light mr-2 py-1">Show Cart</a> <i class="fas fa-cart-shopping"></i> Cart (<span id="total-item">{{Gloudemans\Shoppingcart\Facades\Cart::content()->count()}}</span>)</div>
 			</div>
 			</div>
@@ -182,7 +186,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#checkoutModal">Checkout</button>
+                 <button type="button" id="checkout-btn" @if(Cart::content()->count()==0) disabled @endif class="btn btn-success" data-toggle="modal" data-target="#checkoutModal">Checkout</button>
             </div>
        
         </div>
@@ -301,6 +305,7 @@
 						$("#message").html(response.msg);
 						$("#total-item").html(response.total_items);
 						$("#total-price").html(response.total_price);
+						$("#checkout-btn").removeAttr('disabled');
 						setTimeout(function(){
 							$("#message").html("");
 					}, 5000);

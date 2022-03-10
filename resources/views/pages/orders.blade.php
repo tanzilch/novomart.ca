@@ -17,7 +17,28 @@
         </div>
     </div>
     <!-- PAGE-HEADER END -->
-
+    <form action="{{route('filter.order')}}" method="POST">
+    @csrf
+        <div class="row px-0 mb-2">
+            <div class="col-md-3 pl-0">
+                <label class="mb-1">From</label>
+                <input type="date" class="form-control" name="start_date">
+                @error('start_date')
+                    <span class="text-danger">{{$message}}</span>
+                @enderror
+            </div>
+            <div class="col-md-3">
+                <label class="mb-1">To</label>
+                <input type="date" class="form-control" name="end_date">
+                @error('end_date')
+                    <span class="text-danger">{{$message}}</span>
+                @enderror
+            </div>
+            <div class="col-md-3">
+                <input type="submit" class="mt-5 btn btn-success" name="filter_btn">
+            </div>
+        </div>
+    </form>
     <div class="row">
         <div class="col-lg-12 p-2 bg-white shadow-sm mb-5">
             <!-- Shopping cart table -->
@@ -66,7 +87,7 @@
                             
                             <td class="align-middle text-center">
                                 <div class="h-100 d-flex justify-content-center align-middle">
-                                    <a href="{{route('product.status',['id'=>$product->id])}}" style="@if($product->status=='1') pointer-events:none; @endif" class="text-white btn btn-success submit-btn">Update</a>
+                                    <a href="{{route('product.status',['id'=>$product->id])}}" style="@if($product->status=='1') pointer-events:none; @endif" class="text-white btn btn-success submit-btn">Delivered</a>
                                 </div>
                             </td>
                         </tr>
@@ -114,7 +135,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                         <a href="{{route('product.status',['id'=>$product->id])}}" style="@if($product->status=='1') pointer-events:none; @endif" class="text-white btn btn-success submit-btn">Update</a>
+                                         <a href="{{route('product.status',['id'=>$product->id])}}" style="@if($product->status=='1') pointer-events:none; @endif" class="text-white btn btn-success submit-btn">Delivered</a>
                                     </div>
                                
                                 </div>

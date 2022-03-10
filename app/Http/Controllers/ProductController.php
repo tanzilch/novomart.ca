@@ -68,19 +68,18 @@ class ProductController extends BaseController
                         <div class="mt-2 d-flex justify-content-between">
                             <div class="w-25">Qty: <span class="text-black-50">'. $product->qty .'</span></div>
                             <h5 class="text-grey">$'. $product->qty*$priceValue[0] .'</h5>
-                            <div class="d-flex align-items-center"><i class="fa fa-trash mb-1 text-success"></i>
+                            <div class="d-flex align-items-center"><a href="'.route("del.from.cart",['id'=>$product->rowId]).'"><i class="fa fa-trash mb-1 text-success"></i></a>
                             </div>
                         </div>
                     </div>';
         }
         echo $data;
     }
-    public function delFromCart(Request $request)
+    public function delFromCart(Request $request, $rowId)
     {
-    	$rowId = '468399581342505c47f4615b81bedaa9';
     	$cartItem = Cart::remove($rowId);
-
-    	return redirect()->route('add.to.cart');die;
+        $request->session()->flash('msg', 'One item removed from cart');
+    	return redirect()->route('products');die;
     }
     public function priceInCart()
     {
@@ -100,13 +99,14 @@ class ProductController extends BaseController
             $messages->to("websterzonedev3@gmail.com");
             $messages->subject('Products');
         });
-        Cart::destroy();
         Product::create([
             "first_name" => $request->first_name,
             "last_name" => $request->last_name,
             "email" => $request->email,
             "products" => json_encode(Cart::content()),
         ]);
+        Cart::destroy();
+        $request->session()->flash('msg', "Greate! Thanks for order");
         return redirect(route('products'));
     }
 
